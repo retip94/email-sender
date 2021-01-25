@@ -9,12 +9,12 @@ import yaml
 import logging
 
 # noinspection PyArgumentList
-logging.basicConfig(handlers=[logging.FileHandler("log.log"), logging.StreamHandler()],
+logging.basicConfig(handlers=[logging.FileHandler("../log.log"), logging.StreamHandler()],
                     level=logging.INFO,
                     format='%(asctime)s |  %(levelname)s | %(message)s')
 
-MAILING_LIST_FILE = 'mailing-list.xlsx'
-LOGIN_DATA_FILE = 'login-data.yaml'
+MAILING_LIST_FILE = '../mailing-list.xlsx'
+LOGIN_DATA_FILE = '../login-data.yaml'
 
 message = MIMEMultipart("alternative")
 
@@ -49,7 +49,7 @@ def main():
     for idx, row in mailing_list.iterrows():
         receiver_email = row['email']
         name = row['name']
-        if pd.isnull(receiver_email) or not validate_email(receiver_email):
+        if not validate_email(receiver_email):
             logging.error(f'{receiver_email} is not valid')
             continue
         # Add HTML/plain-text parts to message
@@ -78,7 +78,9 @@ def init_email_server(login_data):
         return None
 
 
-def validate_email(email_address: str):
+def validate_email(email_address):
+    if pd.isnull(email_address):
+        return False
     email_regex = re.compile(r"^[a-z0-9]+[._]?[a-z0-9]+[@]\w+[.]\w{2,3}$")
     return email_regex.fullmatch(email_address)
 
