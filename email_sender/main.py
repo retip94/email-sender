@@ -81,7 +81,7 @@ def init_email_server(login_data):
 def validate_email(email_address):
     if pd.isnull(email_address):
         return False
-    email_regex = re.compile(r"^[a-z0-9]+[._]?[a-z0-9]+[@]\w+[.]\w{2,3}$")
+    email_regex = re.compile(r"[A-Za-z0-9-_]+(.[A-Za-z0-9-_]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})")
     return email_regex.fullmatch(email_address)
 
 

@@ -1,0 +1,4 @@
+setuptools~=40.6.2
+pytest~=6.2.1
+pandas~=0.25.1
+PyYAML~=5.4.1
