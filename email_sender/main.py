@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import re
 import pandas as pd
-from string import Template
+import message_templates as templates
 import yaml
 import logging
 
@@ -16,31 +16,11 @@ logging.basicConfig(handlers=[logging.FileHandler("../log.log"), logging.StreamH
 MAILING_LIST_FILE = '../mailing-list.xlsx'
 LOGIN_DATA_FILE = '../login-data.yaml'
 
-message = MIMEMultipart("alternative")
-
-message["Subject"] = "Temat wiadomości"
-MESSAGE_TEMPLATE_TEXT = Template("""\
-    Hi $name, 
-    Template message
-    
-    
-    Remember to visit my site
-    http://cv.retip1994.usermd.net/""")
-MESSAGE_TEMPLATE_HTML = Template("""\
-    <html>
-      <body>
-        <p>Hi $name,<br>
-            <h2>Template message</h2>
-           Remember to visit my site<br>
-           <a href="http://cv.retip1994.usermd.net/">Piotr Piekielny</a>
-        </p>
-      </body>
-    </html>
-    """)
-
 
 def main():
     login_data = get_login_data()
+    message = MIMEMultipart("alternative")
+    message["Subject"] = templates.SUBJECT
     message["From"] = login_data.get('email', '')
     server = init_email_server(login_data)
     if server is None:
@@ -55,8 +35,8 @@ def main():
         # Add HTML/plain-text parts to message
         # The email client will try to render the last part first
         message["To"] = receiver_email
-        message.attach(MIMEText(MESSAGE_TEMPLATE_TEXT.substitute(name=name), "plain"))
-        message.attach(MIMEText(MESSAGE_TEMPLATE_HTML.substitute(name=name), "html"))
+        message.attach(MIMEText(templates.MESSAGE_TEMPLATE_TEXT.substitute(name=name), "plain"))
+        message.attach(MIMEText(templates.MESSAGE_TEMPLATE_HTML.substitute(name=name), "html"))
         try:
             server.sendmail(login_data['email'], receiver_email, message.as_string())
             logging.info(f'message to {receiver_email} sent successfully')
