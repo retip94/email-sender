@@ -42,6 +42,10 @@ Go to email_sender folder and run:
 
 `python main.py`
 
+On the first use app will ask for email login data and will store it in local file.
+
+If one wants to use other address to send emails, one has to delete login-data.yaml file
+
 
 ## Technologies
 Project is created with:
