@@ -1,4 +1,4 @@
-#Mass mailing CLI app
+# Mass mailing CLI app
 Mass email sending with template message filling
 
 
